@@ -13,10 +13,10 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@AllArgsConstructor
+@Builder
 @Table(name = "tb_portability")
 public class Portability implements Serializable {
 
