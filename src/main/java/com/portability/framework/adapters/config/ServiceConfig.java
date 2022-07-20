@@ -14,9 +14,8 @@ public class ServiceConfig {
 
     @Bean
     PortabilityServiceImp portabilityService(PortabilityRepository repository, ModelMapper mapper) {
-        return new PortabilityServiceImp(repository, mapper);
+        return new PortabilityServiceImp();
     }
-
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();

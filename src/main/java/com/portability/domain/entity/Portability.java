@@ -1,6 +1,6 @@
 package com.portability.domain.entity;
 
-import com.portability.domain.entity.enums.PortabilityStatus;
+import com.portability.domain.entity.enums.Status;
 import com.portability.domain.entity.enums.TelephoneCompany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,7 +39,7 @@ public class Portability implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
-    private PortabilityStatus portabilityStatus;
+    private Status portabilityStatus;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")

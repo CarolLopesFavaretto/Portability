@@ -1,6 +1,6 @@
 package com.portability.domain.entity.enums;
 
-public enum PortabilityStatus {
+public enum Status {
 
     PROCESSANDO_PORTABILIDADE,
     PORTADO,

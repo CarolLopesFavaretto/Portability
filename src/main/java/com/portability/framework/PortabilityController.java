@@ -5,6 +5,7 @@ import com.portability.domain.entity.Portability;
 import com.portability.framework.adapters.in.dtos.InputPortabilityDTO;
 import com.portability.framework.adapters.in.dtos.UpdatedPortabilityStatusDTO;
 import com.portability.framework.adapters.in.rest.OutputCreatedPortability;
+import com.portability.framework.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,23 +20,27 @@ import java.util.UUID;
 @RequestMapping("/portability")
 public class PortabilityController {
 
-    private final PortabilityService service;
+    @Autowired
+    private PortabilityService service;
 
-    public PortabilityController(PortabilityService service) {
-        this.service = service;
+    @GetMapping("/{portabilityId}")
+    public ResponseEntity<Portability> findById(@PathVariable UUID portabilityId) {
+        var optional = service.findByID(portabilityId).orElseThrow(()
+                -> new ResourceNotFoundException("Portabilidade não encontrada"));
+        return ResponseEntity.ok().body(optional);
     }
 
     @PostMapping
-    public ResponseEntity<OutputCreatedPortability> created(@RequestBody InputPortabilityDTO portabilityDTO){
+    public ResponseEntity<OutputCreatedPortability> created(@Valid @RequestBody InputPortabilityDTO portabilityDTO) {
         Portability portability = service.created(portabilityDTO);
         log.info("Portabilidade criada com sucesso: {}", portability.getPortabilityId());
-        return ResponseEntity.status(HttpStatus.CREATED).body( new OutputCreatedPortability(portability.getPortabilityId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new OutputCreatedPortability(portability.getPortabilityId()));
     }
 
     @PutMapping("/{portabilityId}")
-    public ResponseEntity<?> putPortability(@PathVariable UUID portabilityId, @RequestBody UpdatedPortabilityStatusDTO status){
-        service.updatedPortability(portabilityId,status);
+    public ResponseEntity<?> putPortability(@PathVariable UUID portabilityId, @RequestBody UpdatedPortabilityStatusDTO status) {
+        service.updatedPortability(portabilityId, status);
         log.info("Callback recebido com sucesso, status: {}", status.getStatus());
-        return ResponseEntity.ok().body("Portabilidade concluída, status: " + status.getStatus()+ "!");
+        return ResponseEntity.ok().body("Portabilidade concluída, status: " + status.getStatus() + "!");
     }
 }
