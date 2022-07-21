@@ -28,6 +28,7 @@ services:
     ports:
       - "9092:9092"
 
+
   postgresql:
     image: postgres:13.5-alpine
     container_name: postgre-portability
@@ -43,3 +44,12 @@ services:
 
 #  volumes:
 #    db_data: { }
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    depends_on:
+      - kafka
+    ports:
+      - 19000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092

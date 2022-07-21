@@ -1,6 +1,8 @@
 package com.portability.application.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.portability.application.ports.in.PortabilityService;
+import com.portability.application.ports.out.KafkaService;
 import com.portability.application.ports.out.PortabilityRepository;
 import com.portability.domain.entity.Portability;
 import com.portability.domain.entity.User;
@@ -20,23 +22,28 @@ public class PortabilityServiceImp implements PortabilityService {
     private PortabilityRepository repository;
 
     @Autowired
+    private KafkaService kafkaService;
+
+    @Autowired
     private ModelMapper mapper;
 
 
     @Override
-    public Portability created(InputPortabilityDTO portabilityDTO) {
+    public Portability created(InputPortabilityDTO portabilityDTO) throws JsonProcessingException {
         Portability portability = Portability.builder()
                 .user(mapper.map(portabilityDTO.getUser(), User.class))
                 .portabilityStatus(Status.PROCESSANDO_PORTABILIDADE)
                 .source(portabilityDTO.getPortability().getSource())
                 .target(portabilityDTO.getPortability().getTarget())
                 .build();
-        return repository.save(portability);
+        portability = repository.save(portability);
+        kafkaService.eventPortability(portability);
+        return portability;
     }
 
     @Override
     public Optional<Portability> findByID(UUID portabilityId) {
-       return repository.findById(portabilityId);
+        return repository.findById(portabilityId);
     }
 
     @Override

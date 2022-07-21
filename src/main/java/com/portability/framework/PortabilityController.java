@@ -1,5 +1,6 @@
 package com.portability.framework;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.portability.application.ports.in.PortabilityService;
 import com.portability.domain.entity.Portability;
 import com.portability.framework.adapters.in.dtos.InputPortabilityDTO;
@@ -31,7 +32,7 @@ public class PortabilityController {
     }
 
     @PostMapping
-    public ResponseEntity<OutputCreatedPortability> created(@Valid @RequestBody InputPortabilityDTO portabilityDTO) {
+    public ResponseEntity<OutputCreatedPortability> created(@Valid @RequestBody InputPortabilityDTO portabilityDTO) throws JsonProcessingException {
         Portability portability = service.created(portabilityDTO);
         log.info("Portabilidade criada com sucesso: {}", portability.getPortabilityId());
         return ResponseEntity.status(HttpStatus.CREATED).body(new OutputCreatedPortability(portability.getPortabilityId()));
