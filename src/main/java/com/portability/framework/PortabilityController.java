@@ -3,6 +3,7 @@ package com.portability.framework;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.portability.application.ports.in.PortabilityService;
 import com.portability.domain.entity.Portability;
+import com.portability.domain.entity.enums.Status;
 import com.portability.framework.adapters.in.dtos.InputPortabilityDTO;
 import com.portability.framework.adapters.in.dtos.UpdatedPortabilityStatusDTO;
 import com.portability.framework.adapters.in.rest.OutputCreatedPortability;
@@ -25,9 +26,9 @@ public class PortabilityController {
     private PortabilityService service;
 
     @GetMapping("/{portabilityId}")
-    public ResponseEntity<Portability> findById(@PathVariable UUID portabilityId) {
-        var optional = service.findByID(portabilityId).orElseThrow(()
-                -> new ResourceNotFoundException("Portabilidade não encontrada"));
+    public ResponseEntity<Portability> findById(@PathVariable String portabilityId) {
+        var optional = service.findByID(UUID.fromString(portabilityId)).orElseThrow(()
+                -> new ResourceNotFoundException("Portabilidade nao encontrada"));
         return ResponseEntity.ok().body(optional);
     }
 
@@ -39,9 +40,9 @@ public class PortabilityController {
     }
 
     @PutMapping("/{portabilityId}")
-    public ResponseEntity<?> putPortability(@PathVariable UUID portabilityId, @RequestBody UpdatedPortabilityStatusDTO status) {
+    public ResponseEntity<String> putPortability(@PathVariable UUID portabilityId, @RequestBody Status status) {
         service.updatedPortability(portabilityId, status);
-        log.info("Callback recebido com sucesso, status: {}", status.getStatus());
-        return ResponseEntity.ok().body("Portabilidade concluída, status: " + status.getStatus() + "!");
+        log.info("Callback recebido com sucesso, status: {}", status);
+        return ResponseEntity.ok().body("Portabilidade concluida, status: " + status + "!");
     }
 }

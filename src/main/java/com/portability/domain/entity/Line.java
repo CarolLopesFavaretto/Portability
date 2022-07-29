@@ -25,6 +25,5 @@ public class Line implements Serializable {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID lineId;
-
     private Integer number;
 }

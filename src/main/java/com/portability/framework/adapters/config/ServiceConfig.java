@@ -26,9 +26,9 @@ import java.time.format.DateTimeFormatter;
 @ComponentScan(basePackageClasses = PortabilityApplication.class)
 public class ServiceConfig {
 
-    public final String DATE_TIME_FORMATTER_WITH_MILLISECONDS = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-    public final String DATE_TIME_FORMAT_YEAR_MONTH = "yyyyMM";
-    public final String DATE_TIME_FORMATTER_YEAR_MONTH_DAY = "yyyy-MM-dd";
+    public static final String DATE_TIME_FORMATTER_WITH_MILLISECONDS = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    public static final String DATE_TIME_FORMAT_YEAR_MONTH = "yyyyMM";
+    public static final String DATE_TIME_FORMATTER_YEAR_MONTH_DAY = "yyyy-MM-dd";
 
     @Bean
     PortabilityServiceImp portabilityService(PortabilityRepository repository, ModelMapper mapper, KafkaService kafkaService) {

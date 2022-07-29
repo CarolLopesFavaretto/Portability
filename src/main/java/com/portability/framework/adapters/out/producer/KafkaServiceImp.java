@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portability.application.ports.out.KafkaService;
 import com.portability.domain.entity.Portability;
+import com.portability.framework.adapters.config.PortabilityMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,9 +24,12 @@ public class KafkaServiceImp implements KafkaService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private PortabilityMapper mapper;
+
     @Override
     public void eventPortability(Portability event) throws JsonProcessingException {
-        String messageJson = objectMapper.writeValueAsString(event);
+        String messageJson = objectMapper.writeValueAsString(mapper.objMessage(event));
         log.info("Payload enviado: {}", messageJson);
         message.send(topicName, messageJson);
     }

@@ -1,4 +1,4 @@
-package com.portability.framework.adapters.in.dtos;
+package com.portability.framework.adapters.in.rest;
 
 import com.portability.domain.entity.enums.TelephoneCompany;
 import lombok.AllArgsConstructor;
@@ -6,17 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PortabilityDTO implements Serializable {
+public class PortabilityMessageKafka {
 
-    @NotNull(message = "field cannot be null")
+    private UUID portabilityId;
     private TelephoneCompany source;
-    @NotNull(message = "field cannot be null")
     private TelephoneCompany target;
+
+
 }

@@ -28,6 +28,13 @@ services:
     ports:
       - "9092:9092"
 
+  sonarqube:
+    container_name: 'sonarqube-portability'
+    image: sonarqube:latest
+    ports:
+      - 9000:9000
+#    environment:
+#      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
 
   postgresql:
     image: postgres:13.5-alpine

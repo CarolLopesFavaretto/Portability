@@ -8,7 +8,6 @@ import com.portability.domain.entity.Portability;
 import com.portability.domain.entity.User;
 import com.portability.domain.entity.enums.Status;
 import com.portability.framework.adapters.in.dtos.InputPortabilityDTO;
-import com.portability.framework.adapters.in.dtos.UpdatedPortabilityStatusDTO;
 import com.portability.framework.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,9 @@ public class PortabilityServiceImp implements PortabilityService {
     @Autowired
     private ModelMapper mapper;
 
-
     @Override
     public Portability created(InputPortabilityDTO portabilityDTO) throws JsonProcessingException {
+
         Portability portability = Portability.builder()
                 .user(mapper.map(portabilityDTO.getUser(), User.class))
                 .portabilityStatus(Status.PROCESSANDO_PORTABILIDADE)
@@ -47,11 +46,11 @@ public class PortabilityServiceImp implements PortabilityService {
     }
 
     @Override
-    public void updatedPortability(UUID portabilityId, UpdatedPortabilityStatusDTO status) {
+    public void updatedPortability(UUID portabilityId, Status status) {
         var entity = repository.findById(portabilityId).orElseThrow(() ->
                 new ResourceNotFoundException("Portabilidade não encontrada"));
 
-        entity.setPortabilityStatus(status.getStatus());
+        entity.setPortabilityStatus(status);
         repository.save(entity);
     }
 }
